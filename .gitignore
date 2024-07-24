@@ -1,0 +1,19 @@
+# Ignore image files
+*.jpg
+*.png
+
+# Ignore tar.gz files
+*.tar.gz
+
+# Ignore PyTorch model files
+*.pth
+
+# Ignore zip files
+*.zip
+
+# Ignore specific directories
+exp_result/
+incorrect_fig_output/
+
+# Ignore large files (example: larger than 100MB)
+*.largefile

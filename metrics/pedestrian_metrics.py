@@ -13,11 +13,29 @@ def get_pedestrian_metrics(gt_label, preds_probs, threshold=0.5, index=None, cfg
 
     eps = 1e-20
     result = EasyDict()
-
+    
     if index is not None:
         pred_label = pred_label[:, index]
         gt_label = gt_label[:, index]
 
+    ####
+    gt_class = np.argmax(gt_label,axis=1)
+    pred_class = np.argmax(preds_probs, axis=1)
+    true_positives = np.bincount(gt_class[gt_class == pred_class], minlength=4)
+
+    # Calculate per-class ground truth counts
+    ground_truth_counts = np.bincount(gt_class, minlength=4)
+    
+    # Calculate per-class accuracy
+    per_class_accuracy = true_positives / (ground_truth_counts + 1e-6)  # Add small value to avoid division by zero
+    print("Per-class accuracy:", per_class_accuracy*100.0)
+    # print("PRED     :", true_positives)
+    # print("G-Truth  :", ground_truth_counts)
+    # per_class_acc = np.sum((gt_class == pred_class),axis=0,dtype=np.int32)
+    # print("Total Acc:", per_class_acc / gt_class.shape)
+    # print("total: ", gt_class.shape)
+    ####
+    
     ###############################
     # label metrics
     # TP + FN

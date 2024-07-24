@@ -13,8 +13,8 @@ class PedesAttr(data.Dataset):
 
     def __init__(self, cfg, split, transform=None, target_transform=None, idx=None):
 
-        assert cfg.DATASET.NAME in ['PETA', 'PA100k', 'RAP', 'RAP2'], \
-            f'dataset name {cfg.DATASET.NAME} is not exist'
+        # assert cfg.DATASET.NAME in ['PETA', 'PA100k', 'RAP', 'RAP2', 'BagCountGPT', 'BagCountOxygenLabeller','MonAndSongkhranChunk0-0'], \
+        #     f'dataset name {cfg.DATASET.NAME} is not exist'
 
         data_path = get_pkl_rootpath(cfg.DATASET.NAME, cfg.DATASET.ZERO_SHOT)
 

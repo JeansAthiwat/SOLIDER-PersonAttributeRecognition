@@ -11,7 +11,7 @@ from tools.utils import AverageMeter, to_scalar, time_str
 
 
 def logits4pred(criterion, logits_list):
-    if criterion.__class__.__name__.lower() in ['bceloss']:
+    if criterion.__class__.__name__.lower() in ['bceloss','focalloss']:
         logits = logits_list[0]
         probs = logits.sigmoid()
     else:
@@ -145,7 +145,7 @@ def valid_trainer(cfg, args, epoch, model, valid_loader, criterion, loss_w=[1, ]
             valid_probs, valid_logits = logits4pred(criterion, valid_logits)
             preds_probs.append(valid_probs.cpu().numpy())
             preds_logits.append(valid_logits.cpu().numpy())
-
+            # print(preds_probs)
             if len(loss_list) > 1:
                 for i, meter in enumerate(subloss_meters):
                     meter.update(
@@ -163,6 +163,7 @@ def valid_trainer(cfg, args, epoch, model, valid_loader, criterion, loss_w=[1, ]
 
     gt_label = np.concatenate(gt_list, axis=0)
     preds_probs = np.concatenate(preds_probs, axis=0)
+    # print(preds_probs)
     preds_logits = np.concatenate(preds_logits, axis=0)
 
     return valid_loss, gt_label, preds_probs, imgname_list, preds_logits, loss_mtr_list

@@ -1,11 +1,11 @@
 import argparse
 import json
 import os
-os.environ['CUDA_VISIBLE_DEVICES'] = '2'
+# os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 import pickle
 
 from dataset.augmentation import get_transform
-from dataset.multi_label.coco import COCO14
+# from dataset.multi_label.coco import COCO14
 from metrics.pedestrian_metrics import get_pedestrian_metrics
 from models.model_factory import build_backbone, build_classifier
 
@@ -22,7 +22,33 @@ from models.base_block import FeatClassifier
 
 from tools.function import get_model_log_path, get_reload_weight
 from tools.utils import set_seed, str2bool, time_str
+
+
+import argparse
+import pickle
+import numpy as np
+
+from configs import cfg, update_config
+#from dataset.multi_label.coco import COCO14
+from dataset.augmentation import get_transform
+from metrics.ml_metrics import get_multilabel_metrics
+from metrics.pedestrian_metrics import get_pedestrian_metrics
+from tools.distributed import distribute_bn
+from tools.vis import tb_visualizer_pedes
+import torch
+from torch.utils.data import DataLoader
+
+from dataset.pedes_attr.pedes import PedesAttr
+from models.base_block import FeatClassifier
+from models.model_factory import build_loss, build_classifier, build_backbone
+
+from tools.function import get_model_log_path, get_reload_weight, seperate_weight_decay
+from tools.utils import time_str, save_ckpt, ReDirectSTD, set_seed, str2bool, gen_code_archive
+from models.backbone import swin_transformer
 from losses import bceloss, scaledbceloss
+from models import base_block
+
+from jeans.utils import get_wrong_pred, save_wrong_pred_figure
 
 set_seed(605)
 
@@ -35,11 +61,7 @@ def main(cfg, args):
     print(valid_tsfm)
 
     if cfg.DATASET.TYPE == 'multi_label':
-        train_set = COCO14(cfg=cfg, split=cfg.DATASET.TRAIN_SPLIT, transform=train_tsfm,
-                           target_transform=cfg.DATASET.TARGETTRANSFORM)
-
-        valid_set = COCO14(cfg=cfg, split=cfg.DATASET.VAL_SPLIT, transform=valid_tsfm,
-                           target_transform=cfg.DATASET.TARGETTRANSFORM)
+        assert False, f'{cfg.DATASET.TYPE} is not implemented bro'
     else:
         train_set = PedesAttr(cfg=cfg, split=cfg.DATASET.TRAIN_SPLIT, transform=valid_tsfm,
                               target_transform=cfg.DATASET.TARGETTRANSFORM)
@@ -78,12 +100,13 @@ def main(cfg, args):
         scale =cfg.CLASSIFIER.SCALE
     )
 
-    model = FeatClassifier(backbone, classifier)
+    model = FeatClassifier(backbone, classifier, bn_wd=False)
 
+    # print(torch.cuda.is_available())
     if torch.cuda.is_available():
         model = torch.nn.DataParallel(model).cuda()
 
-    model = get_reload_weight(model_dir, model, pth='/mnt/data1/jiajian/code/Rethinking_of_PAR/exp_result/coco14/resnet101.sgd.bt32/img_model/ckpt_max_2021-11-28_10:14:50.pth')
+    model = get_reload_weight(model_dir, model, pth=cfg.RELOAD.PTH)
 
     model.eval()
     preds_probs = []
@@ -92,11 +115,12 @@ def main(cfg, args):
 
     attn_list = []
     with torch.no_grad():
-        for step, (imgs, gt_label, imgname) in enumerate(tqdm(train_loader)):
+        for step, (imgs, gt_label, imgname) in enumerate(tqdm(valid_loader)):
             imgs = imgs.cuda()
             gt_label = gt_label.cuda()
             valid_logits, attns = model(imgs, gt_label)
-
+            # print(attns[0])
+            # print(valid_logits[0][0])
             valid_probs = torch.sigmoid(valid_logits[0])
 
             path_list.extend(imgname)
@@ -106,14 +130,15 @@ def main(cfg, args):
 
 
     gt_label = np.concatenate(gt_list, axis=0)
-    preds_probs = np.concatenate(preds_probs, axis=0)
+    preds_probs = np.concatenate(preds_probs, axis=0) # [0.1 0.3 0.2 0.4]
     attn_list = np.concatenate(attn_list, axis=0)
-
 
     if cfg.METRIC.TYPE == 'pedestrian':
         valid_result = get_pedestrian_metrics(gt_label, preds_probs)
         valid_map, _ = get_map_metrics(gt_label, preds_probs)
-
+        wrong_pred_path, wrong_pred_class, wrong_preds_probs, wrong_preds_gt_label  = get_wrong_pred(gt_label, preds_probs, path_list) # should return a dict of imagename: pred_label, pred_probs
+        save_wrong_pred_figure(cfg, wrong_preds_gt_label, wrong_pred_path, wrong_pred_class, wrong_preds_probs, fig_dir='Incorrect_fig_output')
+        # print(valid_wrong_pred[:50])
         print(f'Evaluation on test set, \n',
               'ma: {:.4f},  map: {:.4f}, label_f1: {:4f}, pos_recall: {:.4f} , neg_recall: {:.4f} \n'.format(
                   valid_result.ma, valid_map, np.mean(valid_result.label_f1), np.mean(valid_result.label_pos_recall),

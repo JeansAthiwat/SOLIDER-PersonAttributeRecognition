@@ -22,6 +22,34 @@ def seperate_weight_decay(named_params, lr, weight_decay=1e-5, skip_list=()):
     return [{'params': no_decay, 'lr': lr, 'weight_decay': 0.},
             {'params': decay, 'lr': lr, 'weight_decay': weight_decay}]
 
+def ratio3weight(targets_mask, sample_weight):
+    """
+    Calculate the sample weights based on the ratio of classes.
+
+    Args:
+        targets_mask (torch.Tensor): A mask tensor with the same shape as targets indicating the presence of each class.
+        sample_weight (str): The weighting strategy, e.g., 'weight', 'sqrt', or 'none'.
+
+    Returns:
+        torch.Tensor: A tensor of sample weights.
+    """
+    # Count the number of occurrences of each class in the targets
+    class_counts = targets_mask.sum(dim=0)
+    
+    # Calculate class weights as the inverse of the class frequency
+    class_weights = 1.0 / (class_counts + 1e-6)  # Add a small value to avoid division by zero
+    
+    if sample_weight == 'weight':
+        # Apply weights to each sample
+        sample_weights = targets_mask * class_weights
+    elif sample_weight == 'sqrt':
+        # Apply square root of weights to each sample
+        sample_weights = targets_mask * torch.sqrt(class_weights)
+    else:
+        # No weighting
+        sample_weights = torch.ones_like(targets_mask)
+    
+    return sample_weights
 
 def ratio2weight(targets, ratio):
     ratio = torch.from_numpy(ratio).type_as(targets)
@@ -106,6 +134,7 @@ def get_pkl_rootpath(dataset, zero_shot):
 
 def get_reload_weight(model_path, model, pth='ckpt_max.pth'):
     model_path = os.path.join(model_path, pth)
+    # print(f"\n\n{model_path}\n\n")
     load_dict = torch.load(model_path, map_location=lambda storage, loc: storage)
 
     if isinstance(load_dict, OrderedDict):

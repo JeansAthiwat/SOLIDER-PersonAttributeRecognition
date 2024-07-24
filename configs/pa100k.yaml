@@ -11,11 +11,12 @@ DATASET:
   WIDTH: 128
 
 RELOAD:
-  TYPE: False
+  TYPE: True
   NAME: 'backbone'
+  PTH: 'ckpt_max_2024-07-11_19:17:08.pth'
 
 BACKBONE:
-  TYPE: 'swin_t' # swin_t/s/b
+  TYPE: 'swin_s' # swin_t/s/b
 
 CLASSIFIER:
   NAME: 'linear'
@@ -33,11 +34,11 @@ TRAIN:
   CLIP_GRAD: True
   BATCH_SIZE: 64
   OPTIMIZER:
-    TYPE: 'adam'
+    TYPE: 'sgd'
     WEIGHT_DECAY: 0.0
   LR_SCHEDULER:
-    TYPE: 'plateau'
-    LR_FT: 0.00001
+    TYPE: 'warmup_cosine'
+    LR_FT: 0.00001 #learning rate fine tune
     LR_NEW: 0.00001
   EMA:
     ENABLE: False
