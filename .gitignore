@@ -14,6 +14,7 @@
 # Ignore specific directories
 exp_result/
 incorrect_fig_output/
+__pycache__/
 
 # Ignore large files (example: larger than 100MB)
 *.largefile
