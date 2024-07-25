@@ -3,14 +3,14 @@ NAME: 'swin_s.bc_labeller'
 
 DATASET:
   TYPE: 'pedes'
-  NAME: 'BagCountOxygenLabeller'
+  NAME: 'SongkhranChunk0-0'
   TRAIN_SPLIT: 'trainval'
   VAL_SPLIT: 'test'
   ZERO_SHOT: False
   LABEL: 'eval'
   HEIGHT: 256
   WIDTH: 128
-
+Incorrect_fig_output/
 RELOAD:
   TYPE: True
   NAME: 'backbone'

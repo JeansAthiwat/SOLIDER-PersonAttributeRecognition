@@ -4,10 +4,10 @@ import cv2
 import csv
 
 DATA_DATE = '2024-04-12'
-CHUNK_NUM = 0
+CHUNK_NUM = 1
 LABELED_ROOT = f'/home/deepvisionpoc/Desktop/Jeans/resources/bag_count/labeled/{DATA_DATE}_chunk_{CHUNK_NUM}'
 LABELED_CSV = os.path.join(LABELED_ROOT, 'label_progress.csv')
-CURRENT_CLASS = '3'
+CURRENT_CLASS = '0'
 
 # Load labeled images from CSV
 labeled_imgs = set()
@@ -40,7 +40,7 @@ for root, dirs, files in os.walk(os.path.join(LABELED_ROOT, CURRENT_CLASS)):
         
         # Open image using OpenCV
         image = cv2.imread(img_path)
-        
+        image = cv2.convertScaleAbs(image, alpha=0.8, beta=40)
         # Resize image to fill the top and bottom
         screen_height = 1080  # Assuming a common screen height if windo1w not visible
         screen_width = 1920  # Assuming a common screen width if window not visible
@@ -95,5 +95,15 @@ for root, dirs, files in os.walk(os.path.join(LABELED_ROOT, CURRENT_CLASS)):
             shutil.move(img_path, new_path)
             update_csv(image_name, '3')
             print(f"MOVED TO CLASS 3: {image_name}")
+        elif key == ord('r'):  # Move to class rare
+            new_path = os.path.join(LABELED_ROOT, 'rare', image_name)
+            if not os.path.exists(os.path.join(LABELED_ROOT, 'rare')):
+                os.makedirs(os.path.join(LABELED_ROOT, 'rare'))
+            shutil.move(img_path, new_path)
+            # update_csv(image_name, 'rare')
+            print(f"MOVED TO CLASS rare: {image_name}")
+        elif key == ord('x'):  # Move to class rare
+            print(f"TERMINATED")
+            break
         
         cv2.destroyAllWindows()

@@ -1,9 +1,8 @@
-
-NAME: 'swin_s.bc_labeller'
+NAME: '.no_bp_shoulderb'
 
 DATASET:
   TYPE: 'pedes'
-  NAME: 'BagCountOxygenLabeller'
+  NAME: 'NoShoulderNorBackPack_1_1'
   TRAIN_SPLIT: 'trainval'
   VAL_SPLIT: 'test'
   ZERO_SHOT: False
@@ -12,12 +11,11 @@ DATASET:
   WIDTH: 128
 
 RELOAD:
-  TYPE: True
+  TYPE: False
   NAME: 'backbone'
-  PTH: 'nobpsb.pth'
 
 BACKBONE:
-  TYPE: 'swin_s' # swin_t/s/b
+  TYPE: 'swin_s' # swin_t/s/bS
 
 CLASSIFIER:
   NAME: 'linear'
@@ -27,6 +25,7 @@ CLASSIFIER:
 
 LOSS:
   TYPE: 'bceloss'
+  # TYPE: 'focalloss'
   LOSS_WEIGHT: [1]
   SAMPLE_WEIGHT: 'weight'
 
@@ -39,8 +38,8 @@ TRAIN:
     WEIGHT_DECAY: 0.0
   LR_SCHEDULER:
     TYPE: 'plateau'
-    LR_FT: 0.00001
-    LR_NEW: 0.00001
+    LR_FT: 0.000008
+    LR_NEW: 0.000008
   EMA:
     ENABLE: False
 
@@ -49,5 +48,3 @@ METRIC:
 
 VIS:
   CAM: 'valid'
-  TENSORBOARD:
-    ENABLE: False

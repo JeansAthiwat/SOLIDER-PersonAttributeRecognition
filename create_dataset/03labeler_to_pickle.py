@@ -7,9 +7,9 @@ from easydict import EasyDict as edict
 import pickle
 from sklearn.model_selection import train_test_split
 
-DS_NAME = "SongkhranChunk0-0"
+DS_NAME = "NoShoulderNorBackPack_1_1"
 
-DATASET_ROOT = "/home/deepvisionpoc/Desktop/Jeans/resources/mon/2024-04-12_chunk_0"
+DATASET_ROOT = "/home/deepvisionpoc/Desktop/Jeans/resources/bag_count/labeled/2024-04-12_chunk_1"
 DESTINATION_ROOT = f"/home/deepvisionpoc/Desktop/Jeans/SOLIDER_exp/SOLIDER-PersonAttributeRecognition/data/{DS_NAME}/images"
 FORMATTED_RESPONSE = f"/home/deepvisionpoc/Desktop/Jeans/SOLIDER_exp/SOLIDER-PersonAttributeRecognition/data/{DS_NAME}/intermediate.pkl"
 DATASET_ALL_PKL_PATH = f"/home/deepvisionpoc/Desktop/Jeans/SOLIDER_exp/SOLIDER-PersonAttributeRecognition/data/{DS_NAME}/dataset_all.pkl"
@@ -34,8 +34,12 @@ def flatten_dataset():
     count = 0
     for root, dirs, files in os.walk(DATASET_ROOT):
         for file in files:
-            image_full_path = osp.join(root, file)
             
+            if not file.endswith(('.jpg','.png')):
+                continue
+            
+            image_full_path = osp.join(root, file)
+            print(image_full_path)
             # if not "2024-04-12" in image_full_path:
             #     continue
             

@@ -4,10 +4,9 @@ import cv2
 import csv
 
 DATA_DATE = '2024-04-12'
-CHUNK_NUM = 0
+CHUNK_NUM = 1
 LABELED_ROOT = f'/home/deepvisionpoc/Desktop/Jeans/resources/bag_count/labeled/{DATA_DATE}_chunk_{CHUNK_NUM}'
 LABELED_CSV = os.path.join(LABELED_ROOT, 'label_progress.csv')
-CURRENT_CLASS = '3'
 
 # Load labeled images from CSV
 counts = [0,0,0,0]
@@ -46,4 +45,5 @@ for root, dirs, files in os.walk(LABELED_ROOT):
             rem_count += 1
             # print("removed :", img_path)
 print(rem_count)
+
 
