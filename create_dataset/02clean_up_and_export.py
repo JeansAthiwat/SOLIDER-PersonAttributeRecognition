@@ -4,9 +4,13 @@ import cv2
 import csv
 
 DATA_DATE = '2024-04-12'
-CHUNK_NUM = 1
+CHUNK_NUM = 2
 LABELED_ROOT = f'/home/deepvisionpoc/Desktop/Jeans/resources/bag_count/labeled/{DATA_DATE}_chunk_{CHUNK_NUM}'
-LABELED_CSV = os.path.join(LABELED_ROOT, 'label_progress.csv')
+# DEST_ROOT = f'/home/deepvisionpoc/Desktop/Jeans/resources/bag_count/cleaned/{DATA_DATE}_chunk_{CHUNK_NUM}'
+DEST_ROOT = f'/home/deepvisionpoc/Desktop/Jeans/resources/bag_count/cleaned/MallBagOnly'
+
+os.makedirs(DEST_ROOT,exist_ok=True)
+LABELED_CSV = os.path.join(DEST_ROOT, 'label_progress.csv')
 
 # Load labeled images from CSV
 counts = [0,0,0,0]
@@ -38,10 +42,12 @@ for root, dirs, files in os.walk(LABELED_ROOT):
         img_path = os.path.join(root, file)
         image_name = os.path.basename(img_path)
 
-        if image_name in dict_keys and (not labeled_imgs[image_name] == "delete"):
-            continue
+        if (image_name in dict_keys) and (not ((labeled_imgs[image_name] == "delete") or (labeled_imgs[image_name] == "rare" ))):
+            label = int(img_path.split('/')[-2])
+            shutil.copy(img_path, os.path.join(DEST_ROOT,str(label)) )
+
         else:
-            os.remove(img_path)
+            # os.remove(img_path)
             rem_count += 1
             # print("removed :", img_path)
 print(rem_count)

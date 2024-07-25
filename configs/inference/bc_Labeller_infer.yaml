@@ -3,7 +3,7 @@ NAME: 'swin_s.bc_labeller'
 
 DATASET:
   TYPE: 'pedes'
-  NAME: 'BagCountOxygenLabeller'
+  NAME: 'NoShoulderNorBackPack_1_1'
   TRAIN_SPLIT: 'trainval'
   VAL_SPLIT: 'test'
   ZERO_SHOT: False
@@ -14,7 +14,8 @@ DATASET:
 RELOAD:
   TYPE: True
   NAME: 'backbone'
-  PTH: 'nobpsb.pth'
+  # PTH: 'nobpsb.pth'
+  PTH: 'nobpsb_chunk1_2.pth'
 
 BACKBONE:
   TYPE: 'swin_s' # swin_t/s/b

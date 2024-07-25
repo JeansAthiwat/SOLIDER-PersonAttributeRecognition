@@ -4,10 +4,10 @@ import cv2
 import csv
 
 DATA_DATE = '2024-04-12'
-CHUNK_NUM = 1
-LABELED_ROOT = f'/home/deepvisionpoc/Desktop/Jeans/resources/bag_count/labeled/{DATA_DATE}_chunk_{CHUNK_NUM}'
+CHUNK_NUM = 3
+LABELED_ROOT = f'/home/deepvisionpoc/Desktop/Jeans/resources/bag_count/labeled/no_bp_sb/{DATA_DATE}_chunk_{CHUNK_NUM}'
 LABELED_CSV = os.path.join(LABELED_ROOT, 'label_progress.csv')
-CURRENT_CLASS = '0'
+CURRENT_CLASS = '2'
 
 # Load labeled images from CSV
 labeled_imgs = set()

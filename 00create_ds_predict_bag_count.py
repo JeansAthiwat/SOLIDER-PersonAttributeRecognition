@@ -66,19 +66,15 @@ np.set_printoptions(precision=2, suppress=True)
 esta function predict the amount of bags on all images in the chunk and save the picture in a new destination sorted by classes
 '''
 DATA_DATE = '2024-04-12'
-CHUNK_NUM = 1
+CHUNK_NUM = 3
 DATASET_ROOT = f'/home/deepvisionpoc/Desktop/Jeans/resources/bag_count/raw/{DATA_DATE}_chunk_{CHUNK_NUM}/images'
-DEST_IMG_ROOT = f'/home/deepvisionpoc/Desktop/Jeans/resources/bag_count/labeled/{DATA_DATE}_chunk_{CHUNK_NUM}'
-CSV_FILE = f'/home/deepvisionpoc/Desktop/Jeans/resources/bag_count/labeled/{DATA_DATE}_chunk_{CHUNK_NUM}/label_result.csv'
-PKL_FILE = f'/home/deepvisionpoc/Desktop/Jeans/resources/bag_count/labeled/{DATA_DATE}_chunk_{CHUNK_NUM}/label_result.pkl'
+DEST_IMG_ROOT = f'/home/deepvisionpoc/Desktop/Jeans/resources/bag_count/labeled/no_bp_sb/{DATA_DATE}_chunk_{CHUNK_NUM}'
+CSV_FILE = f'/home/deepvisionpoc/Desktop/Jeans/resources/bag_count/labeled/no_bp_sb/{DATA_DATE}_chunk_{CHUNK_NUM}/label_result.csv'
+PKL_FILE = f'/home/deepvisionpoc/Desktop/Jeans/resources/bag_count/labeled/no_bp_sb/{DATA_DATE}_chunk_{CHUNK_NUM}/label_result.pkl'
 MODEL_CKPT = '/home/deepvisionpoc/Desktop/Jeans/SOLIDER_exp/SOLIDER-PersonAttributeRecognition/results/mon_songkran/MonAndSK_chunk0_0.pth'
 
 os.makedirs(DEST_IMG_ROOT,exist_ok=True)
 
-#re label
-LABELED_CSV = os.path.join(DEST_IMG_ROOT, 'label_result.csv')
-
-CURRENT_CLASS = '0'
 
 def predict_dataset_label():
 
@@ -103,13 +99,22 @@ def predict_dataset_label():
                 image_name = os.path.basename(file)
                 try:
                     pred_class , pred_probs = model.run_inference(image_full_path)
-                    
+                    # pred_class = pred_class.item()
+                    # print(pred_class)
+                    # print(pred_probs)
                     # breakpoint()
-                    labeled_path = os.path.join(DEST_IMG_ROOT, str(pred_class.item()))
+                    
+                    # if pred_class <= 1 and pred_probs[pred_class] >= 0.75:
+                    #     print(f"Skipped {pred_class}  : {image_name}")
+                    #     continue
+                    
+                    labeled_path = os.path.join(DEST_IMG_ROOT, str(pred_class))
                     os.makedirs(labeled_path, exist_ok=True)
                     shutil.copy(image_full_path, labeled_path)
                     # 0 is non-user-validated , 1 is user validated once
-                    writer.writerow([image_name, pred_class.item(), 0])
-                    print(f"Class {pred_class.item()} : {image_name} copied to destination")
+                    writer.writerow([image_name, pred_class, 0])
+                    print(f"Class {pred_class} : {image_name} copied to destination")
                 except:
                     raise Exception
+
+predict_dataset_label()

@@ -7,9 +7,9 @@ from easydict import EasyDict as edict
 import pickle
 from sklearn.model_selection import train_test_split
 
-DS_NAME = "NoShoulderNorBackPack_1_1"
+DS_NAME = "NoBP"
 
-DATASET_ROOT = "/home/deepvisionpoc/Desktop/Jeans/resources/bag_count/labeled/2024-04-12_chunk_1"
+DATASET_ROOT = "/home/deepvisionpoc/Desktop/Jeans/resources/bag_count/labeled/mixed_chunk"
 DESTINATION_ROOT = f"/home/deepvisionpoc/Desktop/Jeans/SOLIDER_exp/SOLIDER-PersonAttributeRecognition/data/{DS_NAME}/images"
 FORMATTED_RESPONSE = f"/home/deepvisionpoc/Desktop/Jeans/SOLIDER_exp/SOLIDER-PersonAttributeRecognition/data/{DS_NAME}/intermediate.pkl"
 DATASET_ALL_PKL_PATH = f"/home/deepvisionpoc/Desktop/Jeans/SOLIDER_exp/SOLIDER-PersonAttributeRecognition/data/{DS_NAME}/dataset_all.pkl"
@@ -20,7 +20,7 @@ def flatten_dataset():
     os.makedirs(DESTINATION_ROOT, exist_ok=True)
 
     format_dict = edict()
-    format_dict.description = "BagCount_{DS_NAME}"
+    format_dict.description = f"BagCount_{DS_NAME}"
     format_dict.reorder = "group_order"
     format_dict.root = f"/mnt/data1/jiajian/datasets/attribute/{DS_NAME}/images"
     format_dict.attr_name = ["0 Bags", "1 Bags", "2 Bags", ">= 3 Bags"]

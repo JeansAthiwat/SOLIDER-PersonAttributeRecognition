@@ -97,7 +97,7 @@ class BagPredictor():
             # print(pred_probs)
             # print(pred_class)
             
-            return pred_class , pred_probs
+            return pred_class[0].detach().cpu().numpy() , pred_probs[0].detach().cpu().numpy()
     
     def preprocess(self, img_path):
         img = Image.open(img_path)

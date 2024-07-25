@@ -66,7 +66,7 @@ def save_wrong_pred_figure(cfg, gt_label, wrong_pred_path_list, wrong_pred_class
             enhancer = ImageEnhance.Contrast(image)
             image = enhancer.enhance(0.7)
             enhancer = ImageEnhance.Brightness(image)
-            image = enhancer.enhance(1.3)
+            image = enhancer.enhance(1.15)
 
             
             ax = axes[i // num_images_per_row, i % num_images_per_row]

@@ -431,6 +431,8 @@ def trainer(cfg, args, epoch, model, model_ema, train_loader, valid_loader, crit
         with open(result_path, 'wb') as f:
             pickle.dump(result_list, f)
 
+    save_ckpt(model, "".join(path.split(".")[:-1])+"lastEp.pth", e, cur_metric)
+
     return maximum, best_epoch
 
 
