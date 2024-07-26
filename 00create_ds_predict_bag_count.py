@@ -62,15 +62,14 @@ set_seed(605)
 torch.set_printoptions(precision=2, sci_mode=False)
 np.set_printoptions(precision=2, suppress=True)
 
-'''
-esta function predict the amount of bags on all images in the chunk and save the picture in a new destination sorted by classes
-'''
+
 DATA_DATE = '2024-04-12'
 CHUNK_NUM = 3
-DATASET_ROOT = f'/home/deepvisionpoc/Desktop/Jeans/resources/bag_count/raw/{DATA_DATE}_chunk_{CHUNK_NUM}/images'
-DEST_IMG_ROOT = f'/home/deepvisionpoc/Desktop/Jeans/resources/bag_count/labeled/no_bp_sb/{DATA_DATE}_chunk_{CHUNK_NUM}'
-CSV_FILE = f'/home/deepvisionpoc/Desktop/Jeans/resources/bag_count/labeled/no_bp_sb/{DATA_DATE}_chunk_{CHUNK_NUM}/label_result.csv'
-PKL_FILE = f'/home/deepvisionpoc/Desktop/Jeans/resources/bag_count/labeled/no_bp_sb/{DATA_DATE}_chunk_{CHUNK_NUM}/label_result.pkl'
+# DATASET_ROOT = f'/home/deepvisionpoc/Desktop/Jeans/resources/bag_count/raw/{DATA_DATE}_chunk_{CHUNK_NUM}/images'
+DATASET_ROOT = '/home/deepvisionpoc/Desktop/Jeans/resources/bag_count/chunk_63_raw/2024-04-12_chunk_63/images/cross_default_images'
+DEST_IMG_ROOT = f'/home/deepvisionpoc/Desktop/Jeans/resources/bag_count/chunk_63_sorted_cross'
+CSV_FILE = f'/home/deepvisionpoc/Desktop/Jeans/resources/bag_count/chunk_63_sorted_cross/label_result.csv'
+PKL_FILE = f'/home/deepvisionpoc/Desktop/Jeans/resources/bag_count/chunk_63_sorted_cross/label_result.pkl'
 MODEL_CKPT = '/home/deepvisionpoc/Desktop/Jeans/SOLIDER_exp/SOLIDER-PersonAttributeRecognition/results/mon_songkran/MonAndSK_chunk0_0.pth'
 
 os.makedirs(DEST_IMG_ROOT,exist_ok=True)

@@ -5,9 +5,11 @@ import csv
 
 DATA_DATE = '2024-04-12'
 CHUNK_NUM = 3
-LABELED_ROOT = f'/home/deepvisionpoc/Desktop/Jeans/resources/bag_count/labeled/no_bp_sb/{DATA_DATE}_chunk_{CHUNK_NUM}'
+# LABELED_ROOT = f'/home/deepvisionpoc/Desktop/Jeans/resources/bag_count/labeled/no_bp_sb/{DATA_DATE}_chunk_{CHUNK_NUM}'
+LABELED_ROOT = f'/home/deepvisionpoc/Desktop/Jeans/resources/bag_count/test_set_raw/no_bp_sb'
 LABELED_CSV = os.path.join(LABELED_ROOT, 'label_progress.csv')
-CURRENT_CLASS = '2'
+CURRENT_CLASS = '0'                 
+                                                                                                                                 
 
 # Load labeled images from CSV
 labeled_imgs = set()

@@ -1,7 +1,8 @@
 # for single gpu
 # CUDA_VISIBLE_DEVICES=0 python train.py --cfg ./configs/pa100k.yaml
 # CUDA_VISIBLE_DEVICES=0 python infer.py --cfg ./configs/inference/bc_GPT_infer.yaml
-CUDA_VISIBLE_DEVICES=0 python infer.py --cfg ./configs/inference/bc_Labeller_infer.yaml
+# CUDA_VISIBLE_DEVICES=0 python infer.py --cfg ./configs/inference/bc_Labeller_infer.yaml
+CUDA_VISIBLE_DEVICES=0 python infer.py --cfg ./configs/inference/bc_test.yaml
 
 
 

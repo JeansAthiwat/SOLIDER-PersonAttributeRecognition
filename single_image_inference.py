@@ -18,13 +18,14 @@ model = BagPredictor(model_ckpt=MODEL_CKPT)
 # print(pred_class)
 # print(pred_probs)
 
-for root, dirs , files in os.walk('/home/deepvisionpoc/Desktop/Jeans/SOLIDER_exp/SOLIDER-PersonAttributeRecognition/mytestset/many_hand_bag'):
-    for file in files:
-        print("*"*60)
+# for root, dirs , files in os.walk('/home/deepvisionpoc/Desktop/Jeans/SOLIDER_exp/SOLIDER-PersonAttributeRecognition/mytestset/many_hand_bag'):
+#     for file in files:
+#         print("*"*60)
         
-        full_p = os.path.join(root, file)
-        print(full_p)
-        pred_class , pred_probs = model.run_inference(full_p)
-        print(pred_class)
-        print(pred_probs)
-        print("*"*60)
+#         full_p = os.path.join(root, file)
+#         print(full_p)
+#         pred_class , pred_probs = model.run_inference(full_p)
+#         print(pred_class)
+#         print(pred_probs)
+#         print("*"*60)
+
