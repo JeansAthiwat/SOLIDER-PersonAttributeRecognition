@@ -5,7 +5,9 @@
 # CUDA_VISIBLE_DEVICES=0 python train.py --cfg ./configs/bc_oxygen_labeller.yaml
 # CUDA_VISIBLE_DEVICES=0 python train.py --cfg ./configs/finetune/ft_LabelerAndSongkhran.yaml
 # CUDA_VISIBLE_DEVICES=0 python train.py --cfg ./configs/bc_songkhran0-0.yaml
-CUDA_VISIBLE_DEVICES=0 python train.py --cfg ./configs/bc_NoBP.yaml
+
+CUDA_VISIBLE_DEVICES=0 python train.py --cfg ./configs/bc_ctw_store-match-bag_2024-07-01_labeled.yaml
+# CUDA_VISIBLE_DEVICES=0 python train.py --cfg ./configs/bc_ctw_store-match-bag_2024-07-01_everything.yaml
 
 
 

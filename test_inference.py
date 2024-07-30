@@ -13,8 +13,10 @@ torch.set_printoptions(precision=2, sci_mode=False)
 np.set_printoptions(precision=2, suppress=True)
 
 # MODEL_CKPT = '/home/deepvisionpoc/Desktop/Jeans/SOLIDER_exp/SOLIDER-PersonAttributeRecognition/exp_result/BagCountOxygenLabeller/swin_s.bc_labeller/img_model/from_stracht_mon_sk.pth'
-MODEL_CKPT = '/home/deepvisionpoc/Desktop/Jeans/SOLIDER_exp/SOLIDER-PersonAttributeRecognition/exp_result/NoBP/swin_sNoBP/img_model/ckpt_max_2024-07-25_14:33:41lastEp.pth' 
-FIG_PATH = '/home/deepvisionpoc/Desktop/Jeans/SOLIDER_exp/SOLIDER-PersonAttributeRecognition/fig'
+# MODEL_CKPT = '/home/deepvisionpoc/Desktop/Jeans/SOLIDER_exp/SOLIDER-PersonAttributeRecognition/exp_result/NoBP/swin_sNoBP/img_model/ckpt_max_2024-07-25_14:33:41lastEp.pth' 
+MODEL_CKPT = '/home/deepvisionpoc/Desktop/Jeans/SOLIDER_exp/SOLIDER-PersonAttributeRecognition/exp_result/ctw_store-match-bag_2024-07-01_labeled/swin_s.bc_ctw_store-match-bag_2024-07-01_labeled/img_model/metric_2024-07-26_16:16:28.pkl' 
+FIG_PATH = '/home/deepvisionpoc/Desktop/Jeans/SOLIDER_exp/SOLIDER-PersonAttributeRecognition/fig/ctw_store-match-bag_2024-07-01_labeled_tryingto reduceimb'
+os.makedirs(FIG_PATH,exist_ok=True)
 model = BagPredictor(model_ckpt=MODEL_CKPT)
 
 # Path to the root directory
@@ -48,7 +50,7 @@ def process_folder(folder_path,save_path):
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         axes[idx].imshow(image)
         axes[idx].axis('off')
-        axes[idx].set_title(f'Prob: {pred_probs}')
+        axes[idx].set_title(f'{pred_class} Prob: {pred_probs}')
     
     # Save the plot
     # print(save_path)

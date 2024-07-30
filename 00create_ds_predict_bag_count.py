@@ -66,12 +66,12 @@ np.set_printoptions(precision=2, suppress=True)
 DATA_DATE = '2024-04-12'
 CHUNK_NUM = 3
 # DATASET_ROOT = f'/home/deepvisionpoc/Desktop/Jeans/resources/bag_count/raw/{DATA_DATE}_chunk_{CHUNK_NUM}/images'
-DATASET_ROOT = '/home/deepvisionpoc/Desktop/Jeans/resources/bag_count/chunk_63_raw/2024-04-12_chunk_63/images/cross_default_images'
-DEST_IMG_ROOT = f'/home/deepvisionpoc/Desktop/Jeans/resources/bag_count/chunk_63_sorted_cross'
-CSV_FILE = f'/home/deepvisionpoc/Desktop/Jeans/resources/bag_count/chunk_63_sorted_cross/label_result.csv'
-PKL_FILE = f'/home/deepvisionpoc/Desktop/Jeans/resources/bag_count/chunk_63_sorted_cross/label_result.pkl'
-MODEL_CKPT = '/home/deepvisionpoc/Desktop/Jeans/SOLIDER_exp/SOLIDER-PersonAttributeRecognition/results/mon_songkran/MonAndSK_chunk0_0.pth'
-
+DATASET_ROOT = '/home/deepvisionpoc/Desktop/Jeans/resources/mon'
+DEST_IMG_ROOT = f'/home/deepvisionpoc/Desktop/Jeans/resources/bc_store/mon_preds'
+CSV_FILE = f'/home/deepvisionpoc/Desktop/Jeans/resources/bc_store/mon_preds/label_result.csv'
+PKL_FILE = f'/home/deepvisionpoc/Desktop/Jeans/resources/bc_store/mon_preds/label_result.pkl'
+# MODEL_CKPT = '/home/deepvisionpoc/Desktop/Jeans/SOLIDER_exp/SOLIDER-PersonAttributeRecognition/results/mon_songkran/MonAndSK_chunk0_0.pth'
+MODEL_CKPT ='/home/deepvisionpoc/Desktop/Jeans/SOLIDER_exp/SOLIDER-PersonAttributeRecognition/exp_result/ctw_store-match-bag_2024-07-01_labeled/swin_s.bc_ctw_store-match-bag_2024-07-01_labeled/img_model/ckpt_max_2024-07-26_17:57:31.pth'
 os.makedirs(DEST_IMG_ROOT,exist_ok=True)
 
 
@@ -103,9 +103,9 @@ def predict_dataset_label():
                     # print(pred_probs)
                     # breakpoint()
                     
-                    # if pred_class <= 1 and pred_probs[pred_class] >= 0.75:
-                    #     print(f"Skipped {pred_class}  : {image_name}")
-                    #     continue
+                    if pred_class <= 1:# and pred_probs[pred_class] >= 0.75:
+                        print(f"Skipped {pred_class}  : {image_name}")
+                        continue
                     
                     labeled_path = os.path.join(DEST_IMG_ROOT, str(pred_class))
                     os.makedirs(labeled_path, exist_ok=True)

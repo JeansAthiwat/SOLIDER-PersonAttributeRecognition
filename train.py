@@ -143,7 +143,9 @@ def main(cfg, args):
 
     labels = train_set.label
     label_ratio = labels.mean(0) if cfg.LOSS.SAMPLE_WEIGHT else None
-    print("label_ratio" , label_ratio)
+    print("Train label_ratio:" , label_ratio)
+    print("Train label counts:", np.unique(np.argmax(labels,1),return_counts=True)[1])
+    # breakpoint()
     backbone, c_output = build_backbone(cfg.BACKBONE.TYPE, cfg.BACKBONE.MULTISCALE)
 
 

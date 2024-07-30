@@ -1,0 +1,51 @@
+NAME: '.bc_ctw_store-match-bag_2024-07-01_labeled'
+
+DATASET:
+  TYPE: 'pedes'
+  NAME: 'ctw_store-match-bag_2024-07-01_everything'
+  TRAIN_SPLIT: 'trainval'
+  VAL_SPLIT: 'test'
+  ZERO_SHOT: False
+  LABEL: 'eval'
+  HEIGHT: 256
+  WIDTH: 128
+
+RELOAD:
+  TYPE: False
+  NAME: 'backbone'
+
+BACKBONE:
+  TYPE: 'swin_s' # swin_t/s/bS
+
+CLASSIFIER:
+  NAME: 'linear'
+  POOLING: 'avg'
+  SCALE: 1
+  BN: False
+
+LOSS:
+  TYPE: 'bceloss'
+  # TYPE: 'focalloss'
+  LOSS_WEIGHT: [1]
+  SAMPLE_WEIGHT: 'weight'
+
+
+TRAIN:
+  MAX_EPOCH: 24
+  CLIP_GRAD: True
+  BATCH_SIZE: 64
+  OPTIMIZER:
+    TYPE: 'adam'
+    WEIGHT_DECAY: 0.0
+  LR_SCHEDULER:
+    TYPE: 'plateau'
+    LR_FT: 0.00001
+    LR_NEW: 0.00001
+  EMA:
+    ENABLE: False
+
+METRIC:
+  TYPE: 'pedestrian'
+
+VIS:
+  CAM: 'valid'
