@@ -1,8 +1,8 @@
-NAME: '.bc_ctw_store-match-bag_2024-07-01_everything_4000dp'
+NAME: '.bc_ctw_store-match-bag_2024-07-01_labeled'
 
 DATASET:
   TYPE: 'pedes'
-  NAME: 'ctw_store-match-bag_2024-07-01_everything'
+  NAME: 'ctw_store-match-bag_2024-07-01_labeled'
   TRAIN_SPLIT: 'trainval'
   VAL_SPLIT: 'test'
   ZERO_SHOT: False
@@ -11,8 +11,9 @@ DATASET:
   WIDTH: 128
 
 RELOAD:
-  TYPE: False
+  TYPE: True
   NAME: 'backbone'
+  PTH: 'ckpt_max_2024-07-30_11:44:29.pth'
 
 BACKBONE:
   TYPE: 'swin_s' # swin_t/s/bS
@@ -24,8 +25,8 @@ CLASSIFIER:
   BN: False
 
 LOSS:
-  # TYPE: 'bceloss'
-  TYPE: 'focalloss'
+  TYPE: 'bceloss'
+  # TYPE: 'focalloss'
   LOSS_WEIGHT: [1]
   SAMPLE_WEIGHT: 'weight'
 

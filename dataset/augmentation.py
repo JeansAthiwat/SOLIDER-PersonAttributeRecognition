@@ -93,9 +93,9 @@ def get_transform(cfg):
             T.Resize((height, width)),
             T.Pad(10),
             T.RandomCrop((height, width)),
-            T.RandomPerspective(distortion_scale=0.15),
+            # T.RandomPerspective(distortion_scale=0.15),
             T.RandomHorizontalFlip(),
-            T.ColorJitter(brightness=0.15,contrast=0.2,saturation=0.3,hue=0.1),
+            T.ColorJitter(brightness=0.2,contrast=0.2,saturation=0.3,hue=0.1),
             T.ToTensor(),
             normalize,
         ])

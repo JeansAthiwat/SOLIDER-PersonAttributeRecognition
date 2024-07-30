@@ -14,8 +14,8 @@ np.set_printoptions(precision=2, suppress=True)
 
 # MODEL_CKPT = '/home/deepvisionpoc/Desktop/Jeans/SOLIDER_exp/SOLIDER-PersonAttributeRecognition/exp_result/BagCountOxygenLabeller/swin_s.bc_labeller/img_model/from_stracht_mon_sk.pth'
 # MODEL_CKPT = '/home/deepvisionpoc/Desktop/Jeans/SOLIDER_exp/SOLIDER-PersonAttributeRecognition/exp_result/NoBP/swin_sNoBP/img_model/ckpt_max_2024-07-25_14:33:41lastEp.pth' 
-MODEL_CKPT = '/home/deepvisionpoc/Desktop/Jeans/SOLIDER_exp/SOLIDER-PersonAttributeRecognition/exp_result/ctw_store-match-bag_2024-07-01_labeled/swin_s.bc_ctw_store-match-bag_2024-07-01_labeled/img_model/metric_2024-07-26_16:16:28.pkl' 
-FIG_PATH = '/home/deepvisionpoc/Desktop/Jeans/SOLIDER_exp/SOLIDER-PersonAttributeRecognition/fig/ctw_store-match-bag_2024-07-01_labeled_tryingto reduceimb'
+MODEL_CKPT = '/home/deepvisionpoc/Desktop/Jeans/SOLIDER_exp/SOLIDER-PersonAttributeRecognition/exp_result/ctw_store-match-bag_2024-07-01_everything/swin_s.bc_ctw_store-match-bag_2024-07-01_labeled/img_model/ckpt_max_2024-07-30_13:27:19.pth' 
+FIG_PATH = '/home/deepvisionpoc/Desktop/Jeans/SOLIDER_exp/SOLIDER-PersonAttributeRecognition/fig/ctw_store-match-bag_2024-07-01_everything_1000p'
 os.makedirs(FIG_PATH,exist_ok=True)
 model = BagPredictor(model_ckpt=MODEL_CKPT)
 
@@ -25,6 +25,7 @@ root_dir = '/home/deepvisionpoc/Desktop/Jeans/resources/bag_by_store'
 def process_folder(folder_path,save_path):
     image_paths = []
     pred_probs_list = []
+    classes_value = np.array([0,1,2,3], dtype=np.float32)
     
     # Traverse the folder and get all image paths
     for root, _, files in os.walk(folder_path):
@@ -39,18 +40,22 @@ def process_folder(folder_path,save_path):
     
     if num_images == 1:
         axes = [axes]
+        
 
     for idx, image_path in enumerate(image_paths):
         # Run inference
+
         pred_class, pred_probs = model.run_inference(image_path)
         pred_probs_list.append(pred_probs)
-
+        
+        expected_value = (np.sum(classes_value@pred_probs))
+        print(expected_value)
         # Read and plot the image
         image = cv2.imread(image_path)
         image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
         axes[idx].imshow(image)
         axes[idx].axis('off')
-        axes[idx].set_title(f'{pred_class} Prob: {pred_probs}')
+        axes[idx].set_title(f'{pred_class} Prob: {pred_probs}\nexpected_value: {expected_value}')
     
     # Save the plot
     # print(save_path)
